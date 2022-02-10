@@ -7,5 +7,5 @@ Prerequisites
     Maven
     Spring Boot
 
-Run 'mvn spring-boot:run'
+Run `mvn spring-boot:run`
 
