@@ -14,7 +14,7 @@ public class Createuser {
     @NotNull
     private String password;
 
-    public Createuser(String first_name, String last_name, String username, String password) {
+    public Createuser(String first_name, String last_name, String username, String password, String account_created, String account_updated) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;

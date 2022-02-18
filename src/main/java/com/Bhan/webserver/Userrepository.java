@@ -7,4 +7,7 @@ public interface Userrepository extends CrudRepository<Appuser, String> {
 
     @Query("select u from users u where u.username = ?1")
     public Appuser finduserbyusername(String username);
+
+    @Query("select count(u) from users u where u.username = ?1")
+    public long checkrecords(String username);
 }
