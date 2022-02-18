@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,10 @@ import java.util.Base64;
 public class Maincontroller {
     @Autowired
     private Userrepository userrepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private Authenticator authenticator;
 
     @GetMapping(path = "/healthz", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
@@ -24,6 +29,14 @@ public class Maincontroller {
 
     @PostMapping(path = "/v1/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appuser> createuser(@Valid @RequestBody Createuser newuser){
+        if(!Emailcheck.checkemail(newuser.getUsername())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        if(userrepository.checkrecords(newuser.getUsername())!=0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        String password = newuser.getPassword();
+        newuser.setPassword(passwordEncoder.encode(password));
         Appuser user = new Appuser(newuser);
         userrepository.save(user);
         return new ResponseEntity<Appuser>(user, HttpStatus.CREATED);
@@ -31,18 +44,16 @@ public class Maincontroller {
 
     @PutMapping(path = "/v1/user/self", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateuser(@RequestBody Updateuser updateuser, @RequestHeader("Authorization") String authheader){
-        String[] authtokens = authheader.split(" ");
-        if (authtokens[0].equals("Basic")){
-            byte[] decodedBytes = Base64.getDecoder().decode(authtokens[1]);
-            String authvalues = new String(decodedBytes);
-            String[] authcreds = authvalues.split(":");
+        String[] authcreds = authenticator.getauthcreds(authheader);
+
+        if (authcreds!=null){
+
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
             boolean fields = false;
-            if (user.getPassword().equals(authcreds[1])){
+            if (passwordEncoder.matches(user.getPassword(),authcreds[1])){
                 if (updateuser.getUsername() != null){
-                    user.setUsername(updateuser.getUsername());
-                    fields = true;
+                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
                 }
                 if (updateuser.getFirst_name() != null){
                     user.setFirst_name(updateuser.getFirst_name());
@@ -63,28 +74,26 @@ public class Maincontroller {
                 }
                 user.accountupdate();
                 userrepository.save(user);
-                return new ResponseEntity<String>("Updated", HttpStatus.NO_CONTENT);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
             }
         }
-        return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
 
     @GetMapping(path = "/v1/user/self", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> showuser(@RequestHeader("Authorization") String authheader){
-        String[] authtokens = authheader.split(" ");
-        if (authtokens[0].equals("Basic")){
-            byte[] decodedBytes = Base64.getDecoder().decode(authtokens[1]);
-            String authvalues = new String(decodedBytes);
-            String[] authcreds = authvalues.split(":");
+        String[] authcreds = authenticator.getauthcreds(authheader);
+        if (authcreds!=null){
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
-
-            if (user.getPassword().equals(authcreds[1])){
+//            String test = user.getPassword();
+            boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
+            if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 return new ResponseEntity<Appuser>(user, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
 }
