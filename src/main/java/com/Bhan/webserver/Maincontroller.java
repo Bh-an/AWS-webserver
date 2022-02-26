@@ -51,7 +51,7 @@ public class Maincontroller {
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
             boolean fields = false;
-            if (passwordEncoder.matches(user.getPassword(),authcreds[1])){
+            if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 if (updateuser.getUsername() != null){
                     return new ResponseEntity(HttpStatus.BAD_REQUEST);
                 }
@@ -76,8 +76,12 @@ public class Maincontroller {
                 userrepository.save(user);
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
             }
+
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+
+        return null;
     }
 
 
