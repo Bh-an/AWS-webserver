@@ -23,3 +23,13 @@ jobs:
         with:
           name: "webserver-0.0.1-SNAPSHOT.jar"
           path: target/*.jar
+      - name: fetch artifact
+        uses: actions/download-artifact@master
+        with:
+          name: "webserver-0.0.1-SNAPSHOT.jar"
+          path: target/webserver-0.0.1-SNAPSHOT.jar
+      - name: ami packer
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: build
+          arguments: "-var-file='packer/vars.json' packer/ami.json"
