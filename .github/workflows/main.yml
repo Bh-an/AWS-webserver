@@ -38,7 +38,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: webserver-0.0.1-SNAPSHOT.jar
-          path: target/webserver-0.0.1-SNAPSHOT.jar
+          path: packer/webserver-0.0.1-SNAPSHOT.jar
       - name: Packer build
         uses: ExitoLab/packer_build_action_aws@v0.2.10
         with:
