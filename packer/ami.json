@@ -1,0 +1,52 @@
+{
+    "variables": {
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "aws_region": "",
+        "subnet_id": "",
+        "source_ami": ""
+    },
+    "builders": [{
+        "type": "amazon-ebs",        
+        "access_key": "{{user `aws_access_key`}}",
+        "secret_key": "{{user `aws_secret_key`}}",
+        "ami_name": "csye6225_{{timestamp}}",
+        "subnet_id": "{{user `subnet_id`}}",
+        "region": "{{user `aws_region`}}",
+        "source_ami": "{{user `source_ami`}}",
+        "ssh_username": "ec2-user",
+        "instance_type": "t2.micro",
+        "ami_description": "Linux AMI for CSYE6225",
+        "disable_stop_instance": "false",
+        "ssh_timeout": "20m",
+        "communicator": "ssh",            
+        "launch_block_device_mappings": [
+               {
+                   "device_name": "/dev/xvda",
+                   "volume_size": 8,
+                   "volume_type": "gp2",
+                   "delete_on_termination": true
+               }
+        ],
+        "run_tags": {
+            "Name": "Packer Builder",
+            "OsType": "Linux",
+            "CreationDate": "{{timestamp}}",
+            "Owner": "bhan"
+        },
+        "tags": {
+            "CreationDate": "{{timestamp}}",
+            "OsType": "Linux",
+            "Owner": "bhan",
+            "Name": "csye6225_{{timestamp}}"
+        }
+      }],
+      "provisioners": [{
+        "type": "shell",
+        "inline": [
+            "sudo yum update -y",
+            "sudo yum install  java-1.8.0-openjdk -y",
+            "sudo yum install wget"
+        ]
+      }]
+}	
