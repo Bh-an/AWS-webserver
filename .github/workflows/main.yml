@@ -29,7 +29,7 @@ jobs:
       #     name: "webserver-0.0.1-SNAPSHOT.jar"
       #     path: target/webserver-0.0.1-SNAPSHOT.jar
       - name: ami packer
-        uses: hashicorp/packer-github-actions@master
+        uses: hashicorp/packer-github-actions@v0.2.0
         with:
           command: build
           arguments: "packer/ami.json"
