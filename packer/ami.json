@@ -41,10 +41,22 @@
             "Name": "csye6225_{{timestamp}}"
         }
       }],
-      "provisioners": [{
+      "provisioners": [
+        {
+            "type":        "file",
+            "source":      "packer/installsql.sh",
+            "destination": "/tmp/installsql.sh"
+         },
+         {
+            "type":        "file",
+            "source":      "target/webservice-0.0.1-SNAPSHOT.jar",
+            "destination": "/home/ec2-user/webservice-0.0.1-SNAPSHOT.jar"
+         },
+        {
         "type": "shell",
         "inline": [
             "sudo yum update -y",
+            "sudo yum upgrade -y",
             "sudo yum install  java-1.8.0-openjdk -y",
             "sudo yum install wget"
         ],
