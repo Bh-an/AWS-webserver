@@ -58,10 +58,10 @@
             "sudo yum update -y",
             "sudo yum upgrade -y",
             "sudo yum install  java-1.8.0-openjdk -y",
-            "sudo yum install wget"
-        ],
-        "scripts": [
-            "provision.sh"
-          ]
+            "sudo yum install wget",
+            "sudo chmod +x /tmp/installsql.sh",
+            "sudo /tmp/installsql.sh"
+        ]
+        
       }]
 }	

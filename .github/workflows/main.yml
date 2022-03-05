@@ -33,3 +33,5 @@ jobs:
         with:
           command: build
           arguments: "-var-file=packer/vars.json packer/ami.json"
+        env: 
+          PACKER_LOG: 1
