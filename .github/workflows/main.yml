@@ -29,6 +29,8 @@ jobs:
       #     name: "webserver-0.0.1-SNAPSHOT.jar"
       #     path: target/webserver-0.0.1-SNAPSHOT.jar
   packer_build:
+    needs: build
+    name: Packer build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
