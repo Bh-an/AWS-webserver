@@ -28,10 +28,12 @@ jobs:
       #   with:
       #     name: "webserver-0.0.1-SNAPSHOT.jar"
       #     path: target/webserver-0.0.1-SNAPSHOT.jar
-      - name: ami packer
-        uses: hashicorp/packer-github-actions@v0.2.0
+  packer_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Packer build
+        uses: ExitoLab/packer_build_action_aws@v0.2.10
         with:
-          command: build
-          arguments: "packer/ami.json"
-        env: 
-          PACKER_LOG: 1
+          templateFile: 'ami.json'
+          workingDir: 'packer'
