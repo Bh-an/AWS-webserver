@@ -32,6 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: my-artifact
+          path: path/to/artifact
       - name: Packer build
         uses: ExitoLab/packer_build_action_aws@v0.2.10
         with:
