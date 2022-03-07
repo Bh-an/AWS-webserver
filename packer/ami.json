@@ -45,21 +45,19 @@
         {
             "type":        "file",
             "source":      "installsql.sh",
-            "destination": "/home/ec2-user/installsql.sh"
-         },
-         {
-            "type":        "file",
-            "source":      "webserver-0.0.1-SNAPSHOT.jar",
-            "destination": "/home/ec2-user/webserver-0.0.1-SNAPSHOT.jar"
-         },
+            "destination": "~/installsql.sh"
+        },
         {
         "type": "shell",
+        "remote_folder": "~",
         "inline": [
+            "ls",
             "sudo yum update -y",
             "sudo yum upgrade -y",
             "sudo yum install  java-1.8.0-openjdk -y",
-            "sudo yum install wget"
+            "sudo bash ~/installsql.sh"
             ]
+        }
         
-      }]
+      ]
 }	

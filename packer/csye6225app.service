@@ -1,0 +1,18 @@
+[Unit]
+Description=Java Application as a Service
+
+[Service]
+User=ec2-user#change this directory into your workspace
+
+WorkingDirectory=/home/ec2-user/
+
+ExecStart=/bin/bash /home/ec2-user/workspace/runjavaapp.sh
+
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
