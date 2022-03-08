@@ -23,7 +23,7 @@ jobs:
         with:
           name: "webserver-0.0.1-SNAPSHOT.jar"
           path: target/*.jar
-        name: publish properties
+      - name: publish properties
         uses: actions/upload-artifact@v2-preview
         with:
           name: "application.properties"
@@ -44,7 +44,7 @@ jobs:
         with:
           name: webserver-0.0.1-SNAPSHOT.jar
           path: packer/webserver-0.0.1-SNAPSHOT.jar
-        name: Download artifact 2
+      - name: Download artifact 2
         uses: actions/download-artifact@master
         with:
           name: webserver-0.0.1-SNAPSHOT.jar
