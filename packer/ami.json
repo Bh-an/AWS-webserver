@@ -50,12 +50,12 @@
         {
             "type":        "file",
             "source":      "webserver-0.0.1-SNAPSHOT.jar",
-            "destination": "/home/ec2-user/webserver-0.0.1-SNAPSHOT.jar"
+            "destination": "/home/ec2-user/"
         },
         {
             "type":        "file",
             "source":      "application.properties",
-            "destination": "/home/ec2-user/application.properties"
+            "destination": "/home/ec2-user/"
         },
         {
         "type": "shell",
