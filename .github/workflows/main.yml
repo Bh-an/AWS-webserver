@@ -47,7 +47,7 @@ jobs:
       - name: Download artifact 2
         uses: actions/download-artifact@master
         with:
-          name: webserver-0.0.1-SNAPSHOT.jar
+          name: application.properties
           path: packer/application.properties
       - name: Packer build
         uses: ExitoLab/packer_build_action_aws@v0.2.10
