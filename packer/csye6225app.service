@@ -2,15 +2,15 @@
 Description=Java Application as a Service
 
 [Service]
-User=ec2-user#change this directory into your workspace
+User=ec2-user
 
-WorkingDirectory=/home/ec2-user/
+WorkingDirectory=/home/ec2-user/javaapp/
 
-ExecStart=/bin/bash /home/ec2-user/workspace/runjavaapp.sh
+ExecStart=/bin/bash /home/ec2-user/javaapp/runjavaapp.sh
 
 SuccessExitStatus=143
 TimeoutStopSec=10
-Restart=on-failure
+Restart=always
 RestartSec=5
 
 [Install]
