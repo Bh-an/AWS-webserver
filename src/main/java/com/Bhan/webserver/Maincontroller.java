@@ -1,9 +1,12 @@
 package com.Bhan.webserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +15,9 @@ import java.util.Base64;
 
 @RestController
 public class Maincontroller {
+
+
+
     @Autowired
     private Userrepository userrepository;
     @Autowired
@@ -48,25 +54,25 @@ public class Maincontroller {
 
         if (authcreds!=null){
 
-
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
             boolean fields = false;
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 if (updateuser.getUsername() != null){
-                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    if(!updateuser.getUsername().matches(user.getUsername())) {
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    }
                 }
                 if (updateuser.getFirst_name() != null){
                     user.setFirst_name(updateuser.getFirst_name());
                     fields = true;
-
                 }
                 if (updateuser.getLast_name() != null){
                     user.setLast_name(updateuser.getLast_name());
                     fields = true;
-
                 }
                 if (updateuser.getPassword() != null){
-                    user.setPassword(updateuser.getPassword());
+                    String password = updateuser.getPassword();
+                    user.setPassword(passwordEncoder.encode(password));
                     fields = true;
                 }
                 if (!fields){
@@ -81,7 +87,7 @@ public class Maincontroller {
 
         }
 
-        return null;
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
 

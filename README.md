@@ -9,3 +9,7 @@ Prerequisites
     MySQL 8.0
 
 Run `mvn spring-boot:run`
+
+AMI packer
+
+Run `packer build packer/ami.json` 

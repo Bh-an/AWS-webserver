@@ -93,7 +93,7 @@ exitError() {
 	send \"USE csye6225;\r\"
 
 	expect \"mysql>\"
-	send \"create table users (id varchar(20) primary key, username varchar(30), password varchar(80), first_name varchar(15), last_name varchar(15), account_created datetime, account_updated datetime);\r\"
+	send \"create table users (id varchar(50) primary key, username varchar(40), password varchar(80), first_name varchar(20), last_name varchar(20), account_created datetime, account_updated datetime);\r\"
 
 	expect \"mysql>\"
 	send \"quit;\r\"
