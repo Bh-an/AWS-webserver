@@ -58,7 +58,7 @@ public class Maincontroller {
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
             boolean fields = false;
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
-                if (updateuser.getUsername() != null){
+                if (updateuser.getUsername() != null || updateuser.getUsername() != user.getUsername()){
                     return new ResponseEntity(HttpStatus.BAD_REQUEST);
                 }
                 if (updateuser.getFirst_name() != null){
@@ -72,7 +72,8 @@ public class Maincontroller {
 
                 }
                 if (updateuser.getPassword() != null){
-                    user.setPassword(updateuser.getPassword());
+                    String password = updateuser.getPassword();
+                    user.setPassword(passwordEncoder.encode(password));
                     fields = true;
                 }
                 if (!fields){
