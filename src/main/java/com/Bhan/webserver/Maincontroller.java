@@ -54,22 +54,21 @@ public class Maincontroller {
 
         if (authcreds!=null){
 
-
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
             boolean fields = false;
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
-                if (updateuser.getUsername() != null || updateuser.getUsername() != user.getUsername()){
-                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                if (updateuser.getUsername() != null){
+                    if(!updateuser.getUsername().matches(user.getUsername())) {
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    }
                 }
                 if (updateuser.getFirst_name() != null){
                     user.setFirst_name(updateuser.getFirst_name());
                     fields = true;
-
                 }
                 if (updateuser.getLast_name() != null){
                     user.setLast_name(updateuser.getLast_name());
                     fields = true;
-
                 }
                 if (updateuser.getPassword() != null){
                     String password = updateuser.getPassword();
@@ -88,7 +87,7 @@ public class Maincontroller {
 
         }
 
-        return null;
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
 
