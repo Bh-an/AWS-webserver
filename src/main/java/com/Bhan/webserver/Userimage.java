@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,14 +18,14 @@ public class Userimage {
     private String file_name;
     private String url;
     private String user_id;
-    private LocalDateTime upload_date;
+    private LocalDate upload_date;
 
     public Userimage(String file_name, String url, String user_id) {
         this.id = UUID.randomUUID().toString();
         this.file_name = file_name;
         this.url = url;
         this.user_id = user_id;
-        this.upload_date = LocalDateTime.now();
+        this.upload_date = LocalDate.now();
     }
 
     public Userimage() {
@@ -47,7 +48,7 @@ public class Userimage {
         return user_id;
     }
 
-    public LocalDateTime getUpload_date() {
+    public LocalDate getUpload_date() {
         return upload_date;
     }
 }

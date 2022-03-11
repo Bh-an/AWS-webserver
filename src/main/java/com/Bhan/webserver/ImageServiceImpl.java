@@ -37,13 +37,14 @@ public class ImageServiceImpl implements ImageService {
         //Save Image in S3 and then save Image in the database
         String path = String.format("%s/%s", appconfig.getBucketname(), user_id);
         String fileName = String.format("%s", file.getOriginalFilename());
+        String fullpath = String.format("%s/%s", path, file.getOriginalFilename());
         try {
             fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());
         } catch (IOException e) {
             throw new IllegalStateException("Failed to upload file", e);
         }
 
-        Userimage userimage = new Userimage(fileName, path, user_id);
+        Userimage userimage = new Userimage(fileName, fullpath, user_id);
         repository.save(userimage);
 
         return userimage;
