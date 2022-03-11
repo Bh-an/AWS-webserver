@@ -1,5 +1,6 @@
 package com.Bhan.webserver;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Base64;
@@ -17,9 +19,12 @@ import java.util.Base64;
 public class Maincontroller {
 
 
-
+    @Autowired
+    private ImageService imageService;
     @Autowired
     private Userrepository userrepository;
+    @Autowired
+    private Imagerepository iamgerepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -101,6 +106,72 @@ public class Maincontroller {
             boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 return new ResponseEntity<Appuser>(user, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping(path = "/v1/user/self/pic", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Userimage> uploadimage(@RequestHeader("Authorization") String authheader, @RequestParam("file") MultipartFile image){
+
+        String[] authcreds = authenticator.getauthcreds(authheader);
+        if (authcreds!=null){
+
+            Appuser user = userrepository.finduserbyusername(authcreds[0]);
+//            String test = user.getPassword();
+            boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
+            if (passwordEncoder.matches(authcreds[1], user.getPassword())){
+                if (iamgerepository.checkrecords(user.getId())==1) {
+
+                    Userimage oldimage = iamgerepository.findimagebyuser_id(user.getId());
+                    imageService.deleteImage(user.getId(), oldimage.getFile_name());
+                    iamgerepository.delete(oldimage);
+                }
+
+                return new ResponseEntity<Userimage>(imageService.saveImage(user.getId(), image), HttpStatus.CREATED);
+
+            }
+        }
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
+
+    @DeleteMapping(path = "/v1/user/self/pic")
+    public ResponseEntity deleteimage(@RequestHeader("Authorization") String authheader){
+        String[] authcreds = authenticator.getauthcreds(authheader);
+        if (authcreds!=null){
+
+            Appuser user = userrepository.finduserbyusername(authcreds[0]);
+//            String test = user.getPassword();
+            boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
+            if (passwordEncoder.matches(authcreds[1], user.getPassword())){
+                if (iamgerepository.checkrecords(user.getId())==1) {
+
+                    Userimage image = iamgerepository.findimagebyuser_id(user.getId());
+                    imageService.deleteImage(user.getId(), image.getFile_name());
+                    iamgerepository.delete(image);
+                    return new ResponseEntity(HttpStatus.NO_CONTENT);
+                }
+
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
+
+    @GetMapping(path = "/v1/user/self/pic", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> showimage(@RequestHeader("Authorization") String authheader){
+        String[] authcreds = authenticator.getauthcreds(authheader);
+        if (authcreds!=null){
+
+            Appuser user = userrepository.finduserbyusername(authcreds[0]);
+//            String test = user.getPassword();
+            boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
+            if (passwordEncoder.matches(authcreds[1], user.getPassword())) {
+                Userimage image = iamgerepository.findimagebyuser_id(user.getId());
+                if (image != null) {
+                    return new ResponseEntity<Userimage>(image, HttpStatus.OK);
+                }
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
         }
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
