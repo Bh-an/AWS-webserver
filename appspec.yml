@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+- source: ./target/webserver-0.0.1-SNAPSHOT.jar
+destination: ~/webserver-0.0.1-SNAPSHOT.jar
+hooks:
+AfterInstall:
+- location: ./codedeploy/afterinstall.sh
+  timeout: 180
+  runas: ec2-user
+ApplicationStart:
+- location: ./codedeploy/applicationstart.sh
+  timeout: 180
+  runas: ec2-user
+  ApplicationStart:
+- location: ./codedeploy/beforeinstall.sh
+  timeout: 180
+  runas: ec2-user
