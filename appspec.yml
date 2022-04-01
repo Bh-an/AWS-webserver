@@ -1,10 +1,10 @@
 version: 0.0
 os: linux
 files:
-- source: ./packer/webserver-0.0.1-SNAPSHOT.jar
+- source: ./target/webserver-0.0.1-SNAPSHOT.jar/webserver-0.0.1-SNAPSHOT.jar
   destination: /home/ec2-user/webserver-0.0.1-SNAPSHOT.jar
-- source: ./webserver-0.0.1-SNAPSHOT.jar
-  destination: /home/ec2-user/backups/webserver-0.0.1-SNAPSHOT.jar
+# - source: ./webserver-0.0.1-SNAPSHOT.jar
+#   destination: /home/ec2-user/backups/webserver-0.0.1-SNAPSHOT.jar
 hooks:
 AfterInstall:
 - location: ./codedeploy/afterinstall.sh
