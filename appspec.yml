@@ -8,14 +8,14 @@ file_exists_behavior: OVERWRITE
 #   destination: /home/ec2-user/backups/webserver-0.0.1-SNAPSHOT.jar
 hooks:
 AfterInstall:
-- location: codedeploy/afterinstall.sh
+- location: ./codedeploy/afterinstall.sh
   timeout: 180
-  runas: ec2-user
+  runas: root
 ApplicationStart:
-- location: codedeploy/applicationstart.sh
+- location: ./codedeploy/applicationstart.sh
   timeout: 180
-  runas: ec2-user
+  runas: root
 BeforeInstall:
-- location: codedeploy/beforeinstall.sh
+- location: ./codedeploy/beforeinstall.sh
   timeout: 180
-  runas: ec2-user
+  runas: root
