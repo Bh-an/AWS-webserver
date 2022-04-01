@@ -2,7 +2,10 @@ name: Java build
 
 on:
   push:
+    branches-ignore:
+      - main
   pull_request:
+    
 
     
 
