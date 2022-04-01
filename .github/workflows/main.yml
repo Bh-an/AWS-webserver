@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+      - uses: actions/checkout@v2
       - name: Download artifact 1
         uses: actions/download-artifact@master
         with:
@@ -51,7 +51,7 @@ jobs:
           mkdir code_deploy
           zip ${{ env.CODEDEPLOY_ARTIFACT_NAME }} target/webserver-0.0.1-SNAPSHOT.jar codedeploy/*.sh appsec.yml
           mv ${{ env.CODEDEPLOY_ARTIFACT_NAME }} code_deploy/
-          mv code_deploy
+          cd code_deploy
           ls -al
 
       - name: AWS creds
