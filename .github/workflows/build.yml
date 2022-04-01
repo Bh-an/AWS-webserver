@@ -1,7 +1,9 @@
 name: Java build
 
 on:
-  push
+  push:
+  pull_request:
+
     
 
 jobs:
