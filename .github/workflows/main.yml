@@ -27,7 +27,7 @@ jobs:
         run: mvn clean package spring-boot:repackage -DskipTests
      
       - name: publish jar
-      - uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2-preview
         with:
           name: "webserver-0.0.1-SNAPSHOT.jar"
           path: target/*.jar
@@ -36,6 +36,7 @@ jobs:
     name: Code deploy
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - name: Download artifact 1
         uses: actions/download-artifact@master
         with:
@@ -43,7 +44,7 @@ jobs:
           path: target/webserver-0.0.1-SNAPSHOT.jar
 
       - name: Build code-deploy artifact
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         run: |
           mkdir code_deploy
           zip ${{ env.CODEDEPLOY_ARTIFACT_NAME }} target/webserver-0.0.1-SNAPSHOT.jar codedeploy/*.sh appsec.yml
@@ -52,7 +53,7 @@ jobs:
           ls -al
 
       - name: AWS creds
-      - uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
