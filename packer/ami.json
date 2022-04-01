@@ -89,9 +89,10 @@
             "sudo mv csye6225app.service /etc/systemd/system/",
             "sudo systemctl daemon-reload",
             "sudo systemctl enable csye6225app.service",
-            "cd /home/ec2-user",
-            "wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install",
-            "chmod +x ./install",
+            "sudo mkdir ~/backups/",
+            "sudo cd /home/ec2-user",
+            "sudo wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install",
+            "sudo chmod +x ./install",
             "sudo ./install auto",
             "sudo service codedeploy-agent start"           
             ]
