@@ -49,7 +49,7 @@ jobs:
       - name: Build code-deploy artifact
         run: |
           mkdir code_deploy
-          zip ${{ env.CODEDEPLOY_ARTIFACT_NAME }} target/webserver-0.0.1-SNAPSHOT.jar codedeploy/*.sh appspec.yml
+          zip ${{ env.CODEDEPLOY_ARTIFACT_NAME }} codedeploy/*.sh appspec.yml target/webserver-0.0.1-SNAPSHOT.jar
           mv ${{ env.CODEDEPLOY_ARTIFACT_NAME }} code_deploy/
           cd code_deploy
           ls -al
