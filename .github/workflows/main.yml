@@ -44,7 +44,6 @@ jobs:
           path: target/webserver-0.0.1-SNAPSHOT.jar
 
       - name: Build code-deploy artifact
-        uses: actions/checkout@v2
         run: |
           mkdir code_deploy
           zip ${{ env.CODEDEPLOY_ARTIFACT_NAME }} target/webserver-0.0.1-SNAPSHOT.jar codedeploy/*.sh appsec.yml
