@@ -1,5 +1,6 @@
 package com.Bhan.webserver;
 
+import com.timgroup.statsd.StatsDClient;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,10 +30,14 @@ public class Maincontroller {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private Authenticator authenticator;
+    @Autowired
+    private StatsDClient statsd;
+
 
     @GetMapping(path = "/healthy", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Healthzresponse> test() {
+        statsd.incrementCounter("server.get.healthz");
         Healthzresponse response = new Healthzresponse("Success");
         return new ResponseEntity<Healthzresponse>(response, HttpStatus.OK);
 
@@ -40,6 +45,7 @@ public class Maincontroller {
 
     @PostMapping(path = "/v1/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appuser> createuser(@Valid @RequestBody Createuser newuser){
+        statsd.incrementCounter("server.post.v1/user");
         if(!Emailcheck.checkemail(newuser.getUsername())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -55,6 +61,7 @@ public class Maincontroller {
 
     @PutMapping(path = "/v1/user/self", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateuser(@RequestBody Updateuser updateuser, @RequestHeader("Authorization") String authheader){
+        statsd.incrementCounter("server.put.v1/user/self");
         String[] authcreds = authenticator.getauthcreds(authheader);
 
         if (authcreds!=null){
@@ -98,6 +105,7 @@ public class Maincontroller {
 
     @GetMapping(path = "/v1/user/self", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> showuser(@RequestHeader("Authorization") String authheader){
+        statsd.incrementCounter("server.get.v1/user/self");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -113,7 +121,7 @@ public class Maincontroller {
 
     @PostMapping(path = "/v1/user/self/pic", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Userimage> uploadimage(@RequestHeader("Authorization") String authheader, @RequestParam("file") MultipartFile image){
-
+        statsd.incrementCounter("server.post.v1/user/self/pic");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -137,6 +145,7 @@ public class Maincontroller {
 
     @DeleteMapping(path = "/v1/user/self/pic")
     public ResponseEntity deleteimage(@RequestHeader("Authorization") String authheader){
+        statsd.incrementCounter("server.delete.v1/user/self/pic");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -160,6 +169,7 @@ public class Maincontroller {
 
     @GetMapping(path = "/v1/user/self/pic", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> showimage(@RequestHeader("Authorization") String authheader){
+        statsd.incrementCounter("server.get.v1/user/self/pic");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
