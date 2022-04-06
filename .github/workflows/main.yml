@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'Bhan-CSYE6225/webservice'
     name: java buil and publish
     runs-on: ubuntu-latest
 
