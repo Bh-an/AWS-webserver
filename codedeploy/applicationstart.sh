@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config \
+    -m ec2 \
+    -c file:/opt/cloudwatch-config.json \
+    -s
 
-sudo systemctl restart csye6225app.service
+sudo systemctl start csye6225app.service
 
