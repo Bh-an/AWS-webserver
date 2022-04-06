@@ -34,7 +34,7 @@ public class Maincontroller {
     private StatsDClient statsd;
 
 
-    @GetMapping(path = "/healthz", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/healthyboi", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Healthzresponse> test() {
         statsd.incrementCounter("server.get.healthz");
