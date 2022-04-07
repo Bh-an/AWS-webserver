@@ -18,15 +18,15 @@
         "log_stream_name": "cloudwatch_log_stream"
     },
     "metrics":{
-      "metrics_collected":{
-         "statsd":{
-            "service_address":"localhost:8125",
-            "metrics_collection_interval":15,
-            "metrics_aggregation_interval":300,
-            "append_dimensions": {
-                "InstanceId":"${aws:InstanceId}",
-                "AutoScalingGroupName":"${aws:AutoScalingGroupName}"
-            }
+        "append_dimensions": {
+			"AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+			"InstanceId": "${aws:InstanceId}"
+		},
+         "metrics_collected":{
+            "statsd":{
+                "service_address":"localhost:8125",
+                "metrics_collection_interval":15,
+                "metrics_aggregation_interval":300            
          }
       }
    }
