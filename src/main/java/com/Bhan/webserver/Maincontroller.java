@@ -33,11 +33,14 @@ public class Maincontroller {
     @Autowired
     private StatsDClient statsd;
 
+    private static final Logger logger = LoggerFactory.getLogger(Maincontroller.class);
 
     @GetMapping(path = "/health", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Healthzresponse> test() {
         statsd.incrementCounter("server.get.healthz");
+        logger.info("Health endpoint called");
+
         Healthzresponse response = new Healthzresponse("Success");
         return new ResponseEntity<Healthzresponse>(response, HttpStatus.OK);
 
@@ -46,6 +49,7 @@ public class Maincontroller {
     @PostMapping(path = "/v1/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appuser> createuser(@Valid @RequestBody Createuser newuser){
         statsd.incrementCounter("server.post.v1/user");
+        logger.info("POST /v1/user endpoint called");
         if(!Emailcheck.checkemail(newuser.getUsername())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -62,6 +66,7 @@ public class Maincontroller {
     @PutMapping(path = "/v1/user/self", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateuser(@RequestBody Updateuser updateuser, @RequestHeader("Authorization") String authheader){
         statsd.incrementCounter("server.put.v1/user/self");
+        logger.info("PUT /v1/user/self endpoint called");
         String[] authcreds = authenticator.getauthcreds(authheader);
 
         if (authcreds!=null){
@@ -106,6 +111,7 @@ public class Maincontroller {
     @GetMapping(path = "/v1/user/self", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> showuser(@RequestHeader("Authorization") String authheader){
         statsd.incrementCounter("server.get.v1/user/self");
+        logger.info("GET /v1/user/self endpoint called");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -122,6 +128,7 @@ public class Maincontroller {
     @PostMapping(path = "/v1/user/self/pic", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Userimage> uploadimage(@RequestHeader("Authorization") String authheader, @RequestParam("file") MultipartFile image){
         statsd.incrementCounter("server.post.v1/user/self/pic");
+        logger.info("POST /v1/user/self/pic endpoint called");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -146,6 +153,7 @@ public class Maincontroller {
     @DeleteMapping(path = "/v1/user/self/pic")
     public ResponseEntity deleteimage(@RequestHeader("Authorization") String authheader){
         statsd.incrementCounter("server.delete.v1/user/self/pic");
+        logger.info("DELETE /v1/user/self/pic endpoint called");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
@@ -170,6 +178,7 @@ public class Maincontroller {
     @GetMapping(path = "/v1/user/self/pic", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> showimage(@RequestHeader("Authorization") String authheader){
         statsd.incrementCounter("server.get.v1/user/self/pic");
+        logger.info("GET /v1/user/self/pic endpoint called");
         String[] authcreds = authenticator.getauthcreds(authheader);
         if (authcreds!=null){
 
