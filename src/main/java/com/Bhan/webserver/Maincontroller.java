@@ -2,6 +2,8 @@ package com.Bhan.webserver;
 
 import com.timgroup.statsd.StatsDClient;
 import org.apache.catalina.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +37,7 @@ public class Maincontroller {
 
     private static final Logger logger = LoggerFactory.getLogger(Maincontroller.class);
 
-    @GetMapping(path = "/health", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/healthz", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Healthzresponse> test() {
         statsd.incrementCounter("server.get.healthz");
