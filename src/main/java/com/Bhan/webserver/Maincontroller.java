@@ -48,7 +48,7 @@ public class Maincontroller {
 
     }
 
-    @PostMapping(path = "/v1/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/v2/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appuser> createuser(@Valid @RequestBody Createuser newuser){
         statsd.incrementCounter("server.post.v1/user");
         logger.info("POST /v1/user endpoint called");
