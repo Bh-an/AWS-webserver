@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamoDBTable(tableName = "customer")
+@DynamoDBTable(tableName = "Users")
 public class Unverifieduser {
 
     @DynamoDBHashKey
