@@ -22,10 +22,14 @@ public class Appconfig {
 
     private String bucketname;
 
+    private String snstopic;
+
+    public String getSnstopic() {return snstopic;}
+    public void setSnstopic(String snstopic) {this.snstopic = snstopic;}
+
     public String getBucketname() {
         return bucketname;
     }
-
     public void setBucketname(String bucketname) {
         this.bucketname = bucketname;
     }

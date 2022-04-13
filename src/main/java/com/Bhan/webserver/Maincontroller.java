@@ -21,9 +21,12 @@ import java.util.Base64;
 @RestController
 public class Maincontroller {
 
-
+    @Autowired
+    private SNSService snsservice;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private TokenService tokenservice;
     @Autowired
     private Userrepository userrepository;
     @Autowired
@@ -48,8 +51,9 @@ public class Maincontroller {
 
     }
 
-    @PostMapping(path = "/v2/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/v1/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Appuser> createuser(@Valid @RequestBody Createuser newuser){
+
         statsd.incrementCounter("server.post.v1/user");
         logger.info("POST /v1/user endpoint called");
         if(!Emailcheck.checkemail(newuser.getUsername())){
@@ -58,6 +62,7 @@ public class Maincontroller {
         if(userrepository.checkrecords(newuser.getUsername())!=0){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        snsservice.sendmessage(newuser.getFirst_name(),newuser.getUsername(),tokenservice.generatetoken(15));
         String password = newuser.getPassword();
         newuser.setPassword(passwordEncoder.encode(password));
         Appuser user = new Appuser(newuser);
