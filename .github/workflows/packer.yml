@@ -1,9 +1,6 @@
 name: Packer Build
 
-on: 
-  pull_request:
-    branches:
-      - main
+on: [workflow_dispatch]
 
 jobs:
   java_build:
