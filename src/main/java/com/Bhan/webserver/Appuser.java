@@ -18,6 +18,7 @@ public class Appuser {
     private String username;
     private LocalDateTime account_created;
     private LocalDateTime account_updated;
+    private String verified;
     @JsonIgnore
     private String password;
 
@@ -40,6 +41,7 @@ public class Appuser {
         this.account_created = LocalDateTime.now();
         this.account_updated = LocalDateTime.now();
         this.password = newuser.getPassword();
+        this.verified = "no";
     }
 
     public Appuser() {
@@ -65,6 +67,9 @@ public class Appuser {
 
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
+
+    public String getVerified() {return verified;}
+    public void setVerified(String verified) {this.verified = verified;}
 
     @Override
     public String toString() {
