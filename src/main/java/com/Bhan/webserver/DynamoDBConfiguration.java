@@ -10,26 +10,48 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Configuration
 public class DynamoDBConfiguration {
 
-    @Value("${aws.dynamodb.endpoint}")
-    private String dynamodbEndpoint;
+    @Bean
+    public DynamoDbClient getDynamoDbClient() {
+        AwsCredentialsProvider credentialsProvider =
+                DefaultCredentialsProvider.builder()
+                        .build();
+
+        return DynamoDbClient.builder()
+                .region(Region.US_EAST_1)
+                .credentialsProvider(credentialsProvider).build();
+    }
 
     @Bean
-    public DynamoDBMapper dynamoDBMapper() {
-        return new DynamoDBMapper(buildAmazonDynamoDB());
-    }
-
-    private AmazonDynamoDB buildAmazonDynamoDB() {
-
-        InstanceProfileCredentialsProvider dbprovider
-                = new InstanceProfileCredentialsProvider(true);
-
-        return AmazonDynamoDBClientBuilder
-                .standard()
-                .withCredentials(dbprovider)
+    public DynamoDbEnhancedClient getDynamoDbEnhancedClient() {
+        return DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(getDynamoDbClient())
                 .build();
     }
+
 }
+
+//    @Bean
+//    public DynamoDBMapper dynamoDBMapper() {
+//        return new DynamoDBMapper(buildAmazonDynamoDB());
+//    }
+//
+//    private AmazonDynamoDB buildAmazonDynamoDB() {
+//
+//        InstanceProfileCredentialsProvider dbprovider
+//                = new InstanceProfileCredentialsProvider(true);
+//
+//        return AmazonDynamoDBClientBuilder
+//                .standard()
+//                .withCredentials(dbprovider)
+//                .build();
+//    }
+//}

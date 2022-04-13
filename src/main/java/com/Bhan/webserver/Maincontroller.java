@@ -1,23 +1,18 @@
 package com.Bhan.webserver;
 
 import com.timgroup.statsd.StatsDClient;
-import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.Instant;
-import java.util.Base64;
 
 @RestController
 public class Maincontroller {
@@ -69,9 +64,10 @@ public class Maincontroller {
         timestamp += 180;
         String token = tokenservice.generatetoken(15);
         logger.info("Token at post request: " + token);
+        logger.info("Timestamp at request: " + timestamp);
 //      Send username, token and TTL data to DynamoDB
         Unverifieduser uvuser = new Unverifieduser(newuser.getUsername(), token, timestamp);
-        tokenrepository.saveToken(uvuser);
+        tokenrepository.savetoken(uvuser);
         snsservice.sendmessage(newuser.getFirst_name(),newuser.getUsername(),token);
         String password = newuser.getPassword();
         newuser.setPassword(passwordEncoder.encode(password));
@@ -215,12 +211,12 @@ public class Maincontroller {
 
     @GetMapping(path = "/verify", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> verifytoken(@RequestParam("email") String email, @RequestParam("token") String token){
-        Unverifieduser uvuser = tokenrepository.getToken(email);
+        Unverifieduser uvuser = tokenrepository.gettoken(email);
 
-        logger.info("Email at get request:" + uvuser.getUsername());
-        logger.info("token at get request:" + uvuser.getToken());
-        logger.info("expiry at get request:" + uvuser.getExpire());
-        if (token.equals(uvuser.getToken()) && email.equals(uvuser.getUsername())){
+        logger.info("Email at get request:" + uvuser.getusername());
+        logger.info("token at get request:" + uvuser.gettoken());
+        logger.info("expiry at get request:" + uvuser.getexpire());
+        if (token.equals(uvuser.gettoken()) && email.equals(uvuser.getusername())){
             Appuser user = userrepository.finduserbyusername(email);
             user.setVerified("yes");
             user.accountupdate();
