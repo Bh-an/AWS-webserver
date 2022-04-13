@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.Base64;
 
 @RestController
@@ -31,6 +32,8 @@ public class Maincontroller {
     private Userrepository userrepository;
     @Autowired
     private Imagerepository iamgerepository;
+    @Autowired
+    private Tokenrepository tokenrepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -62,7 +65,14 @@ public class Maincontroller {
         if(userrepository.checkrecords(newuser.getUsername())!=0){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        snsservice.sendmessage(newuser.getFirst_name(),newuser.getUsername(),tokenservice.generatetoken(15));
+        long timestamp = Instant.now().getEpochSecond();
+        timestamp += 180;
+        String token = tokenservice.generatetoken(15);
+        logger.info("Token at post request: " + token);
+//      Send username, token and TTL data to DynamoDB
+        Unverifieduser uvuser = new Unverifieduser(newuser.getUsername(), token, timestamp);
+        tokenrepository.saveToken(uvuser);
+        snsservice.sendmessage(newuser.getFirst_name(),newuser.getUsername(),token);
         String password = newuser.getPassword();
         newuser.setPassword(passwordEncoder.encode(password));
         Appuser user = new Appuser(newuser);
@@ -203,4 +213,28 @@ public class Maincontroller {
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
+    @GetMapping(path = "/verify", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> verifytoken(@RequestParam("email") String email, @RequestParam("token") String token){
+        Unverifieduser uvuser = tokenrepository.getToken(email);
+
+        logger.info("Email at get request:" + uvuser.getUsername());
+        logger.info("token at get request:" + uvuser.getToken());
+        logger.info("expiry at get request:" + uvuser.getExpire());
+        if (token.equals(uvuser.getToken()) && email.equals(uvuser.getUsername())){
+            Appuser user = userrepository.finduserbyusername(email);
+            user.setVerified("yes");
+            user.accountupdate();
+            userrepository.save(user);
+
+            return new ResponseEntity<String>("Email has been verified !", HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+        // /verification
+        // 2 params - username, token
+    // check if username exists
+    // check if value is same in dynamoDB
+    // if true: update SQL as verified
 }
+
