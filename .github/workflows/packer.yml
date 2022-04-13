@@ -28,7 +28,7 @@ jobs:
           path: src/main/resources/application.properties
 
   packer_build:
-    needs: build
+    needs: java_build
     name: Packer build
     runs-on: ubuntu-latest
     steps:
