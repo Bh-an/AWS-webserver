@@ -15,13 +15,13 @@ public class Tokenrepository {
     private DynamoDbEnhancedClient dynamoDbenhancedClient ;
 
     // Store the order item in the database
-    public void savetoken(Unverifieduser uvuser) {
+    public void savetoken(final Unverifieduser uvuser) {
         DynamoDbTable<Unverifieduser> uvusertable = getTable();
         uvusertable.putItem(uvuser);
     }
 
     // Retrieve a single order item from the database
-    public Unverifieduser gettoken( String username) {
+    public Unverifieduser gettoken(final String username) {
         DynamoDbTable<Unverifieduser> uvusertable = getTable();
         // Construct the key with partition and sort key
         Key key = Key.builder().partitionValue(username)
