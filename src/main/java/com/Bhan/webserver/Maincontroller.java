@@ -43,7 +43,13 @@ public class Maincontroller {
     public ResponseEntity<Healthzresponse> test() {
         statsd.incrementCounter("server.get.healthz");
         logger.info("Health endpoint called");
-
+        String token = tokenservice.generatetoken(11)
+        Unverifieduser uvuser = new Unverifieduser(token, tokenservice.generatetoken(10), 22);
+        tokenrepository.savetoken(uvuser);
+        Unverifieduser uvuser1 = tokenrepository.gettoken(token);
+        logger.info("UserName: " + uvuser1.getusername());
+        logger.info("token: " + uvuser1.gettoken());
+        logger.info("expire: " + uvuser1.getexpire());
         Healthzresponse response = new Healthzresponse("Success");
         return new ResponseEntity<Healthzresponse>(response, HttpStatus.OK);
 
