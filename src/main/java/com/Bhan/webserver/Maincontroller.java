@@ -57,7 +57,7 @@ public class Maincontroller {
         timestamp += 30;
         Unverifieduser uvuser = new Unverifieduser(token, tokenservice.generatetoken(10), timestamp);
         tokenrepository.savetoken(uvuser);
-        Thread.currentThread().sleep(35000);
+        Thread.currentThread().sleep(60000);
         Unverifieduser uvuser1 = tokenrepository.gettoken(token);
         logger.info("UserName: " + uvuser1.getusername());
         logger.info("token: " + uvuser1.gettoken());
