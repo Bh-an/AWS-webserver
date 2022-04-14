@@ -79,7 +79,7 @@ public class Maincontroller {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         long timestamp = Instant.now().getEpochSecond();
-        timestamp += 30;
+        timestamp += 180;
         String token = tokenservice.generatetoken(15);
         logger.info("Token at post request: " + token);
         logger.info("Timestamp at request: " + timestamp);
@@ -234,7 +234,8 @@ public class Maincontroller {
         logger.info("Email at get request:" + uvuser.getusername());
         logger.info("token at get request:" + uvuser.gettoken());
         logger.info("expiry at get request:" + uvuser.getexpire());
-        if (token.equals(uvuser.gettoken()) && email.equals(uvuser.getusername())){
+        long timestamp = Instant.now().getEpochSecond();
+        if (token.equals(uvuser.gettoken()) && email.equals(uvuser.getusername()) && timestamp< uvuser.getexpire()){
             Appuser user = userrepository.finduserbyusername(email);
             user.setVerified("yes");
             user.accountupdate();
