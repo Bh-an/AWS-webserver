@@ -103,6 +103,9 @@ public class Maincontroller {
         if (authcreds!=null){
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
+
+            if(user.getVerified().equals("no")){return new ResponseEntity(HttpStatus.UNAUTHORIZED);}
+
             boolean fields = false;
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 if (updateuser.getUsername() != null){
@@ -148,6 +151,7 @@ public class Maincontroller {
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
 //            String test = user.getPassword();
+            if(user.getVerified().equals("no")){return new ResponseEntity(HttpStatus.UNAUTHORIZED);}
             boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
                 return new ResponseEntity<Appuser>(user, HttpStatus.OK);
@@ -164,6 +168,7 @@ public class Maincontroller {
         if (authcreds!=null){
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
+            if(user.getVerified().equals("no")){return new ResponseEntity(HttpStatus.UNAUTHORIZED);}
 //            String test = user.getPassword();
             boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
@@ -189,6 +194,7 @@ public class Maincontroller {
         if (authcreds!=null){
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
+            if(user.getVerified().equals("no")){return new ResponseEntity(HttpStatus.UNAUTHORIZED);}
 //            String test = user.getPassword();
             boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
             if (passwordEncoder.matches(authcreds[1], user.getPassword())){
@@ -214,6 +220,7 @@ public class Maincontroller {
         if (authcreds!=null){
 
             Appuser user = userrepository.finduserbyusername(authcreds[0]);
+            if(user.getVerified().equals("no")){return new ResponseEntity(HttpStatus.UNAUTHORIZED);}
 //            String test = user.getPassword();
             boolean match = passwordEncoder.matches(authcreds[1], user.getPassword());
             if (passwordEncoder.matches(authcreds[1], user.getPassword())) {
