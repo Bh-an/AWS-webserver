@@ -40,12 +40,15 @@ public class Maincontroller {
 
     @GetMapping(path = "/healthyboii", produces = MediaType.APPLICATION_JSON_VALUE)
     //@ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Healthzresponse> test() {
+    public ResponseEntity<Healthzresponse> test() throws InterruptedException {
         statsd.incrementCounter("server.get.healthz");
         logger.info("Health endpoint called");
         String token = tokenservice.generatetoken(11);
-        Unverifieduser uvuser = new Unverifieduser(token, tokenservice.generatetoken(10), 22);
+        long timestamp = Instant.now().getEpochSecond();
+        timestamp += 30;
+        Unverifieduser uvuser = new Unverifieduser(token, tokenservice.generatetoken(10), timestamp);
         tokenrepository.savetoken(uvuser);
+        Thread.currentThread().sleep(35000);
         Unverifieduser uvuser1 = tokenrepository.gettoken(token);
         logger.info("UserName: " + uvuser1.getusername());
         logger.info("token: " + uvuser1.gettoken());
@@ -67,7 +70,7 @@ public class Maincontroller {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         long timestamp = Instant.now().getEpochSecond();
-        timestamp += 180;
+        timestamp += 30;
         String token = tokenservice.generatetoken(15);
         logger.info("Token at post request: " + token);
         logger.info("Timestamp at request: " + timestamp);
