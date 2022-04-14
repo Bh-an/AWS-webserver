@@ -30,6 +30,7 @@ public class Appuser {
         this.account_created = LocalDateTime.now();
         this.account_updated = LocalDateTime.now();
         this.password = password;
+        this.verified = "no";
     }
 
     public Appuser(Createuser newuser) {
