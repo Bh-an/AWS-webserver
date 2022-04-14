@@ -7,6 +7,8 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttri
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @DynamoDbBean
 @Data
 public class Unverifieduser {
@@ -14,11 +16,11 @@ public class Unverifieduser {
     private String token;
     private long expire;
 
-    public Unverifieduser(String userName, String Token, long timeStamp) {
-        this.username = userName;
-        this.token = Token;
-        this.expire = timeStamp;
-    }
+//    public Unverifieduser(String userName, String Token, long timeStamp) {
+//        this.username = userName;
+//        this.token = Token;
+//        this.expire = timeStamp;
+//    }
 
     @DynamoDbPartitionKey
     @DynamoDbAttribute("username")
