@@ -23,13 +23,13 @@ public class Unverifieduser {
     @DynamoDbPartitionKey
     @DynamoDbAttribute("username")
     public String getusername() {return this.username;}
-    public void setusername(String username) {}
+    public void setusername(String username) {this.username = username;}
 
     @DynamoDbAttribute("token")
     public String gettoken() {
         return this.token;
     }
-    public void settoken(String email) {}
+    public void settoken(String token) {this.token=token;}
 
     @DynamoDbAttribute("expire")
     public long getexpire() {
