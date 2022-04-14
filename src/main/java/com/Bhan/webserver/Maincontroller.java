@@ -43,7 +43,7 @@ public class Maincontroller {
     public ResponseEntity<Healthzresponse> test() {
         statsd.incrementCounter("server.get.healthz");
         logger.info("Health endpoint called");
-        String token = tokenservice.generatetoken(11)
+        String token = tokenservice.generatetoken(11);
         Unverifieduser uvuser = new Unverifieduser(token, tokenservice.generatetoken(10), 22);
         tokenrepository.savetoken(uvuser);
         Unverifieduser uvuser1 = tokenrepository.gettoken(token);
