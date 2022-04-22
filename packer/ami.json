@@ -73,7 +73,7 @@
             "type":        "file",
             "source":      "mytruststore.jks",
             "destination": "~/"
-        }
+        },
         {
         "type": "shell",
         "remote_folder": "~",
