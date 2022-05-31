@@ -91,6 +91,7 @@
             "sudo chown ec2-user ~/application.properties/application.properties",
             "sudo mkdir ~/javaapp/",
             "sudo mv ~/webserver-0.0.1-SNAPSHOT.jar/webserver-0.0.1-SNAPSHOT.jar ~/application.properties/application.properties runjavaapp.sh rds-truststore.jks ~/javaapp/",
+            "sudo mv ~/webserver-0.0.1-SNAPSHOT.jar/webserver-0.0.1-SNAPSHOT.jar ~/application.properties/application.properties runjavaapp.sh ~/javaapp/",
             "sudo rm -rf ~/webserver-0.0.1-SNAPSHOT.jar",
             "sudo rm -rf ~/application.properties",
             "sudo chown -R ec2-user:ec2-user /home/ec2-user/javaapp/",
