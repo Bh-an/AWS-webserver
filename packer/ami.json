@@ -1,11 +1,11 @@
 {
     "variables": {
-        "aws_access_key": "AKIAVRIUTLVBTQNEZXXC",
-        "aws_secret_key": "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",
+        "aws_access_key": "************************",
+        "aws_secret_key": "*******************************",
         "aws_region": "us-east-1",
         "subnet_id": "subnet-07605702d8ab28eac",
         "source_ami": "ami-033b95fb8079dc481",
-        "demo_account_id": "909665281672"
+        "demo_account_id": "*****************"
     },
     "builders": [{
         "type": "amazon-ebs",        
