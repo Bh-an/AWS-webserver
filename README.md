@@ -1,5 +1,5 @@
 
-webservice
+## Webservice for image storage app hosted on AWS
 
 Prerequisites
 
@@ -13,3 +13,5 @@ Run `mvn spring-boot:run`
 AMI packer
 
 Run `packer build packer/ami.json` 
+
+**Note: This app is designed to run as a loadbalanced and autoclaled service on AWS infra. Cloudformation templates for supporting infra can be found on this [repo](https://github.com/Bh-an/IAC-webserver-cloudformation).
